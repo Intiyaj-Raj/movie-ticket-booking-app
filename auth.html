@@ -25,6 +25,8 @@
 
             <button onclick="showSignup()">Sign up</button>
             <button onclick="login()">Login</button>
+            <p style="margin-top: 10px; cursor: pointer; color: #03dac5;" onclick="showForgotPassword()">Forgot
+                Password?</p>
         </div>
 
 
@@ -36,6 +38,17 @@
             <input type="text" name="" id="otp" placeholder="Enter Your Otp">
             <button onclick="sendOtp()">Send OTP</button>
             <button onclick="signup()">Create Account</button>
+            <p style="margin-top: 10px; cursor: pointer; color: #03dac5;" onclick="showLogin()">Back to Login</p>
+        </div>
+
+        <!-- forgot password page -->
+        <div class="signUpContainer" id="forgotBox">
+            <input type="text" id="forgotEmail" placeholder="enter your registered email">
+            <input type="text" id="forgotOtp" placeholder="Enter OTP">
+            <input type="password" id="forgotNewPassword" placeholder="enter new password">
+            <button onclick="sendForgotOtp()">Send OTP</button>
+            <button onclick="resetPassword()">Reset Password</button>
+            <p style="margin-top: 10px; cursor: pointer; color: #03dac5;" onclick="showLogin()">Back to Login</p>
         </div>
     </div>
 
