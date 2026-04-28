@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bookinghistory</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="history-container">
+        <h1>Booking History</h1>
+        <div class="history-grid" id="historyList"></div>
+        <div id="historyList"></div>
+
+        <button onclick="goHome()">Back to Home</button>
+    </div>
+
+
+    <script>
+        const historyList = document.getElementById("historyList");
+        const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+        const user = localStorage.getItem("loggedInUser");
+
+        const myBookings = bookings.filter((b) => b.user === user);
+
+        if (myBookings.length === 0) {
+            historyList.innerHTML = "<p>No Bookings Found.</p>";
+        } else {
+            myBookings.forEach((booking) => {
+                const div = document.createElement("div");
+                div.className = "history-card";
+
+                div.innerHTML = `
+            <img src="${booking.poster}" alt="${booking.movie}">
+            <h3>${booking.movie}</h3>
+            <p><strong>Date:</strong> ${booking.date}</p>
+            <p><strong>Time:</strong> ${booking.time}</p>
+            <p><strong>Theatre:</strong> ${booking.theatre}</p>
+            <p><strong>Seats:</strong> ${booking.seats.join(", ")}</p>
+            <p><strong>Booking ID:</strong> ${booking.bookingId}</p>
+        `;
+
+                historyList.appendChild(div);
+            });
+        }
+
+
+        function goHome() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+
+</html>

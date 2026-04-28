@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App Auth</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .signUpContainer {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Book MY Show</h2>
+
+        <!-- LOGIN -->
+        <div id="loginBox">
+            <input type="text" id="loginUsername" placeholder="username or email">
+            <input type="password" id="loginPassword" placeholder="password">
+
+            <button onclick="showSignup()">Sign up</button>
+            <button onclick="login()">Login</button>
+        </div>
+
+
+        <!-- sign up page -->
+        <div class="signUpContainer" id="signupBox">
+            <input type="text" id="signupUsername" placeholder="enter your email">
+            <input type="password" id="signupPassword" placeholder="password">
+            <input type="tel" id="usermob" placeholder="mobile number">
+            <input type="text" name="" id="otp" placeholder="Enter Your Otp">
+            <button onclick="sendOtp()">Send OTP</button>
+            <button onclick="signup()">Create Account</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <script src="./script.js"></script>
+
+</body>
+
+</html>
