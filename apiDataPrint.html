@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>api data prints</h1>
+
+
+    <script>
+        const apiKey = 'cafac518041f5c7e643f4d5195ca4891';
+
+        async function getMovies() {
+            try {
+                let url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`;
+
+                let response = await fetch(url);
+
+                if (!response.ok) {
+                    console.log("error")
+                }
+
+                let data = await response.json();
+
+                console.log(data);
+                console.log(data.results);
+
+            } catch (error) {
+                console.log("Error:", error.message);
+            }
+        }
+
+        getMovies();
+    </script>
+</body>
+
+</html>
