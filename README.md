@@ -58,6 +58,8 @@
 | Feature | Description | Emoji |
 |---------|-------------|-------|
 | 🔐 **User Authentication** | Secure Login/Signup with OTP Email Verification | 🔒 |
+| 🔁 **Forgot Password** | Reset password via OTP sent to registered email | 🔄 |
+| 🚫 **Duplicate Prevention** | One-time registration — cannot re-register same email | 🛡️ |
 | 🎬 **Movie Browsing** | Fetches Real-time Popular Movies from TMDB API | 🍿 |
 | 📅 **Date Selection** | Choose from 5 upcoming dates dynamically | 📆 |
 | 🏢 **Theatre Selection** | Multiple theatres with different showtimes | 🎭 |
@@ -270,19 +272,14 @@ This project is licensed under the **MIT License**
 
   <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Technologist.png" alt="Technologist" width="60" height="60" />
 
-  **Made with ❤️ and ☕**
+**👤 Intiyaj Ansari**
 
-  <p>
-    <a href="#">
-      <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-    </a>
-    <a href="#">
-      <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-    </a>
-    <a href="#">
-      <img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter" />
-    </a>
-  </p>
+**📞 Mob:** 9117392461
+
+**📧 Email:** [intiyajraj@gmail.com](mailto:intiyajraj@gmail.com)
+
+
+  **Made with ❤️ and ☕**
 
 </div>
 
