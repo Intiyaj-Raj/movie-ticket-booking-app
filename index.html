@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -70,19 +67,19 @@
         }
 
         // Fetch popular movies from TMDB API
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`)
-            .then(response => response.json())
-            .then(data => {
-                const movies = data.results.map(movie => ({
-                    title: movie.title,
-                    poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                }));
-                renderMovies(movies);
-            })
-            .catch(error => {
-                console.error("Error fetching movies from TMDB:", error);
-                container.innerHTML = "<p>Failed to load movies. Please try again later.</p>";
-            });
+        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${apiey}&language=en-US&page=1`)
+            .then(response => response.json())K
+                .then(data => {
+                    const movies = data.results.map(movie => ({
+                        title: movie.title,
+                        poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    }));
+                    renderMovies(movies);
+                })
+                .catch(error => {
+                    console.error("Error fetching movies from TMDB:", error);
+                    container.innerHTML = "<p>Failed to load movies. Please try again later.</p>";
+                });
 
         function openModal(movie) {
             selectedMovie = movie;

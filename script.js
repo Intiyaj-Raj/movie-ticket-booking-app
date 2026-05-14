@@ -1,5 +1,5 @@
 (function () {
-    emailjs.init("9JIMT7L0LnqOStK5U");
+    emailjs.init("Kei6JRDp6jVqRKGQo");  // add your public key here
 })();
 
 let generatedOtp = "";
@@ -31,6 +31,7 @@ function getUsers() {
 }
 
 function saveUsers(users) {
+
     localStorage.setItem("users", JSON.stringify(users));
 }
 
@@ -40,6 +41,7 @@ function findUserByEmail(email) {
 
 // --- Send OTP for Signup ---
 async function sendOtp() {
+    generatedOtp = Math.floor(1000 + Math.random() * 9000);
     let email = document.getElementById("signupUsername").value;
 
     if (!email) {
@@ -53,7 +55,7 @@ async function sendOtp() {
         return;
     }
 
-    generatedOtp = Math.floor(1000 + Math.random() * 9000);
+
 
     try {
         await emailjs.send("service_b02fh38", "template_ex47e8g", {
@@ -110,7 +112,11 @@ function login() {
     if (user) {
         localStorage.setItem("loggedInUser", username);
         window.location.href = "index.html";
-    } else {
+    }
+    // if (username === "admin@gmail.com" && password === "admin") {
+    //     window.location.href = "index.html";
+    // }
+    else {
         alert("Invalid username or password");
     }
 }
