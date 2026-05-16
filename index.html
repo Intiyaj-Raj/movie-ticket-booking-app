@@ -6,10 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
+    <style>
+        .heading {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+        }
+
+        .heading h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+            width: 80%;
+        }
+
+        #logoutBtn {
+            border: none;
+            outline: none;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 75, 43, 0.35);
+        }
+
+        #logoutBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.5);
+        }
+
+        #logoutBtn:active {
+            transform: scale(0.96);
+        }
+
+        @media (max-width:600px) {
+            .heading {
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            #logoutBtn {
+                margin-top: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Select a Moive</h1>
+    <div class="heading">
+        <h1>Select a Moive</h1>
+        <p id="logoutBtn" onclick="logoutUser()">
+            Logout
+        </p>
+    </div>
+
     <div id="movieContainer" class="movie-container">
     </div>
 
@@ -30,6 +93,16 @@
 
         if (!localStorage.getItem("loggedInUser")) {
             window.location.href = "./auth.html";
+        }
+        // ================= LOGOUT =================
+
+        function logoutUser() {
+
+            localStorage.removeItem("loggedInUser");
+
+            alert("Logged out successfully");
+
+            window.location.href = "index.html";
         }
 
         const apiKey = 'cafac518041f5c7e643f4d5195ca4891';
