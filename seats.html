@@ -111,7 +111,38 @@
 
     </div>
 
+
     <script>
+
+        // ================= LOGIN CHECK =================
+
+        const loggedInUser = localStorage.getItem("loggedInUser");
+
+        if (!loggedInUser) {
+
+            alert("Please login first!");
+
+            window.location.href = "index.html";
+        }
+
+        // ================= MOVIE DATA =================
+
+        const movie =
+            JSON.parse(localStorage.getItem("selectedMovie")) || {
+
+                title: "Avengers Endgame",
+
+                date: "15 May 2026",
+
+                time: "7:30 PM",
+
+                theatre: "PVR Cinemas",
+
+                poster:
+                    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop"
+            };
+
+        // ================= ELEMENTS =================
 
         const seatContainer =
             document.getElementById("seatContainer");
@@ -122,46 +153,103 @@
         const totalSpan =
             document.getElementById("total");
 
+        const movieTitle =
+            document.getElementById("movieTitle");
+
+        // ================= TITLE =================
+
+        movieTitle.innerText =
+            `${movie.title} | ${movie.date} | ${movie.time}`;
+
+        // ================= PRICE =================
 
         const ticketPrice = 150;
 
         let selectedSeats = [];
 
-        let bookedSeats = [2, 5, 12, 20];
+        // ================= UNIQUE SHOW KEY =================
 
-        // Create seats
+        const showKey =
+            `bookedSeats_${movie.title}_${movie.date}_${movie.time}_${movie.theatre}`;
+
+        // ================= BOOKED SEATS =================
+
+        let bookedSeats =
+            JSON.parse(localStorage.getItem(showKey)) || [];
+
+        // Random reserved seats first time only
+        if (bookedSeats.length === 0) {
+
+            let randomSeats = [];
+
+            while (randomSeats.length < 4) {
+
+                let random =
+                    Math.floor(Math.random() * 40);
+
+                if (!randomSeats.includes(random)) {
+
+                    randomSeats.push(random);
+                }
+            }
+
+            bookedSeats = randomSeats;
+
+            localStorage.setItem(
+                showKey,
+                JSON.stringify(bookedSeats)
+            );
+        }
+
+        // ================= CREATE SEATS =================
+
         for (let i = 0; i < 40; i++) {
 
-            const seat = document.createElement("div");
+            const seat =
+                document.createElement("div");
 
             seat.classList.add("seat");
 
             const row =
-                String.fromCharCode(65 + Math.floor(i / 8));
+                String.fromCharCode(
+                    65 + Math.floor(i / 8)
+                );
 
-            const col = (i % 8) + 1;
+            const col =
+                (i % 8) + 1;
 
-            seat.textContent = row + col;
+            seat.textContent =
+                row + col;
 
+            // Reserved seats
             if (bookedSeats.includes(i)) {
+
                 seat.classList.add("booked");
+
+                seat.title = "Reserved";
             }
 
+            // Seat click
             seat.addEventListener("click", () => {
 
-                if (!seat.classList.contains("booked")) {
+                // Prevent booking reserved seats
+                if (seat.classList.contains("booked")) {
 
-                    seat.classList.toggle("selected");
+                    alert("This seat is already reserved!");
 
-                    updateSelection();
+                    return;
                 }
 
+                seat.classList.toggle("selected");
+
+                updateSelection();
             });
 
             seatContainer.appendChild(seat);
         }
 
-        // Update Selection
+        // ================= UPDATE SELECTION =================
+
         function updateSelection() {
 
             selectedSeats =
@@ -174,7 +262,8 @@
                 selectedSeats.length * ticketPrice;
         }
 
-        // Book Seats
+        // ================= BOOK SEATS =================
+
         function bookSeats() {
 
             if (selectedSeats.length === 0) {
@@ -184,20 +273,48 @@
                 return;
             }
 
-            const seatIndexes = selectedSeats.map(seat =>
-                Array.from(seatContainer.children).indexOf(seat)
-            );
+            // Selected indexes
+            const seatIndexes =
+                selectedSeats.map(seat =>
+                    Array.from(seatContainer.children)
+                        .indexOf(seat)
+                );
 
-            const seatNames = seatIndexes.map(index => {
+            // Latest booked seats
+            const latestBookedSeats =
+                JSON.parse(localStorage.getItem(showKey)) || [];
 
-                const row =
-                    String.fromCharCode(65 + Math.floor(index / 8));
+            // Double booking check
+            const alreadyBooked =
+                seatIndexes.some(index =>
+                    latestBookedSeats.includes(index)
+                );
 
-                const col = (index % 8) + 1;
+            if (alreadyBooked) {
 
-                return row + col;
-            });
+                alert("Some seats are already booked!");
 
+                location.reload();
+
+                return;
+            }
+
+            // Seat names
+            const seatNames =
+                seatIndexes.map(index => {
+
+                    const row =
+                        String.fromCharCode(
+                            65 + Math.floor(index / 8)
+                        );
+
+                    const col =
+                        (index % 8) + 1;
+
+                    return row + col;
+                });
+
+            // Booking ID
             const bookingId =
                 "BK" +
                 Math.random()
@@ -205,15 +322,99 @@
                     .substring(2, 10)
                     .toUpperCase();
 
-            // Fill ticket data
+            // ================= SAVE BOOKING =================
+
+            const booking = {
+
+                movie: movie.title,
+
+                date: movie.date,
+
+                time: movie.time,
+
+                theatre: movie.theatre,
+
+                poster: movie.poster,
+
+                seats: seatNames,
+
+                user: loggedInUser,
+
+                bookingId: bookingId
+            };
+
+            const allBookings =
+                JSON.parse(localStorage.getItem("bookings")) || [];
+
+            allBookings.push(booking);
+
+            localStorage.setItem(
+                "bookings",
+                JSON.stringify(allBookings)
+            );
+
+            // ================= SAVE RESERVED SEATS =================
+
+            const updatedBookedSeats = [
+
+                ...new Set([
+
+                    ...latestBookedSeats,
+
+                    ...seatIndexes
+                ])
+            ];
+
+            localStorage.setItem(
+                showKey,
+                JSON.stringify(updatedBookedSeats)
+            );
+
+            // ================= UPDATE UI =================
+
+            selectedSeats.forEach(seat => {
+
+                seat.classList.remove("selected");
+
+                seat.classList.add("booked");
+
+                seat.title = "Reserved";
+            });
+
+            updateSelection();
+
+            // ================= POSTER FIX =================
+
+            const posterImg =
+                document.getElementById("confirmPoster");
+
+            posterImg.crossOrigin =
+                "anonymous";
+
+            posterImg.src =
+                movie.poster ||
+                "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop";
+
+            // Fallback image
+            posterImg.onerror = function () {
+
+                posterImg.src =
+                    "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop";
+            };
+
+            // ================= TICKET DETAILS =================
+
+            document.getElementById("confirmTitle").innerText =
+                movie.title;
+
             document.getElementById("confirmDate").innerText =
-                "15 May 2026";
+                movie.date;
 
             document.getElementById("confirmTime").innerText =
-                "7:30 PM";
+                movie.time;
 
             document.getElementById("confirmTheatre").innerText =
-                "PVR Cinemas";
+                movie.theatre;
 
             document.getElementById("confirmSeats").innerText =
                 seatNames.join(", ");
@@ -221,7 +422,8 @@
             document.getElementById("bookingId").innerText =
                 bookingId;
 
-            // QR CODE
+            // ================= QR CODE =================
+
             const qrDiv =
                 document.getElementById("qrcode");
 
@@ -231,20 +433,24 @@
 
                 text:
                     "Movie Ticket\n" +
-                    "Seats: " + seatNames.join(", ") +
+                    "Movie: " + movie.title +
+                    "\nSeats: " + seatNames.join(", ") +
+                    "\nUser: " + loggedInUser +
                     "\nBooking ID: " + bookingId,
 
                 width: 180,
                 height: 180
             });
 
-            // Show modal
+            // ================= SHOW MODAL =================
+
             document.getElementById(
                 "confirmationModal"
             ).style.display = "flex";
         }
 
-        // DOWNLOAD IMAGE
+        // ================= DOWNLOAD TICKET =================
+
         let isDownloading = false;
 
         async function downloadTicketAsImage() {
@@ -263,6 +469,7 @@
                     ticket.querySelectorAll("img");
 
                 await Promise.all(
+
                     [...images].map(img => {
 
                         if (img.complete)
@@ -271,6 +478,7 @@
                         return new Promise(resolve => {
 
                             img.onload = resolve;
+
                             img.onerror = resolve;
                         });
                     })
@@ -281,7 +489,7 @@
                     setTimeout(resolve, 800)
                 );
 
-                // Generate PNG
+                // Generate image
                 const dataUrl =
                     await htmlToImage.toPng(ticket, {
 
@@ -317,7 +525,6 @@
         }
 
     </script>
-
 </body>
 
 </html>
